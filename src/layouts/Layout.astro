@@ -1,3 +1,6 @@
+---
+import logo from '../assets/logo.png';
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -8,15 +11,173 @@
 		<title>Maxime Huran</title>
 	</head>
 	<body>
-		<slot />
+		<div id="container">
+			<div class="waves-container">
+				<svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+					<defs>
+						<path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z" />
+					</defs>
+					<g class="parallax">
+						<use href="#gentle-wave" x="48" y="0" fill="rgba(97, 192, 168, 0.1)" />
+						<use href="#gentle-wave" x="48" y="3" fill="rgba(58, 125, 116, 0.05)" />
+						<use href="#gentle-wave" x="48" y="5" fill="rgba(255, 255, 255, 0.6)" />
+						<use href="#gentle-wave" x="48" y="7" fill="rgba(97, 192, 168, 0.15)" />
+					</g>
+				</svg>
+			</div>
+
+			<main>
+				<div class="logo-wrapper">
+					<img id="logo" src={logo.src} alt="Maxime Huran" fetchpriority="high" />
+				</div>
+				<div class="content">
+					<slot />
+				</div>
+			</main>
+		</div>
 	</body>
 </html>
 
-<style>
+<style is:global>
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+	}
+	 /* Structure & Alignement */
+	 #container {
+		 position: relative;
+		 width: 100%;
+		 height: 100vh;
+		 display: flex;
+		 justify-content: center;
+		 align-items: center;
+		 /* Dégradé doux basé sur les teintes du logo */
+		 background: linear-gradient(135deg, #f4faf8 0%, #e6f4f0 100%);
+		 overflow: hidden;
+		 font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	 }
+
+	main {
+		position: relative;
+		z-index: 10;
+		text-align: center;
+		padding: 2rem;
+		max-width: 500px;
+		width: 100%;
+		animation: fadeIn 1.2s ease-out;
+	}
+
+	/* Styles du Logo */
+	.logo-wrapper {
+		margin-bottom: 2.5rem;
+	}
+
+	#logo {
+		max-width: 280px;
+		height: auto;
+		filter: drop-shadow(0 10px 20px rgba(58, 125, 116, 0.1));
+		animation: float 4s ease-in-out infinite;
+	}
+
+	/* Textes */
+	.content h1 {
+		font-size: 1.8rem;
+		color: #2d5a52; /* Vert foncé texturé du logo */
+		margin-bottom: 0.75rem;
+		font-weight: 600;
+		letter-spacing: -0.5px;
+	}
+
+	.content p {
+		font-size: 1rem;
+		color: #519e8f; /* Vert intermédiaire */
+		margin-bottom: 2rem;
+		line-height: 1.5;
+	}
+
+	/* Petits points de chargement discrets (esprit pixel/moderne) */
+	.loader {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.dot {
+		width: 8px;
+		height: 8px;
+		background-color: #61c0a8;
+		border-radius: 2px; /* Léger arrondi pour rappeler le côté digital propre */
+		animation: pulse 1.5s infinite ease-in-out;
+	}
+
+	.dot:nth-child(2) { animation-delay: 0.2s; }
+	.dot:nth-child(3) { animation-delay: 0.4s; }
+
+	/* --- Système de Vagues en Arrière-plan --- */
+	.waves-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 20vh;
+		min-height: 100px;
+		max-height: 150px;
+		z-index: 1;
+	}
+
+	.waves {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* Animation des calques de vagues */
+	.parallax > use {
+		animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+	}
+	.parallax > use:nth-child(1) {
+		animation-delay: -2s;
+		animation-duration: 7s;
+	}
+	.parallax > use:nth-child(2) {
+		animation-delay: -3s;
+		animation-duration: 10s;
+	}
+	.parallax > use:nth-child(3) {
+		animation-delay: -4s;
+		animation-duration: 13s;
+	}
+	.parallax > use:nth-child(4) {
+		animation-delay: -5s;
+		animation-duration: 20s;
+	}
+
+	/* --- Animations CSS --- */
+	@keyframes move-forever {
+		0% { transform: translate3d(-90px, 0, 0); }
+		100% { transform: translate3d(85px, 0, 0); }
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(-10px); }
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(15px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	@keyframes pulse {
+		0%, 100% { transform: scale(0.8); opacity: 0.4; }
+		50% { transform: scale(1.2); opacity: 1; }
+	}
+
+	/* Responsive */
+	@media (max-width: 480px) {
+		#logo { max-width: 220px; }
+		.content h1 { font-size: 1.5rem; }
 	}
 </style>
